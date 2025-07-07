@@ -1,0 +1,133 @@
+---
+import { Image } from 'astro:assets';
+
+
+import userPhoto1 from '../../public/foto1.png';
+import userPhoto2 from '../../public/foto2.png';
+import userPhoto3 from '../../public/foto3.png';
+---
+
+<section id="testimonials" class="py-20 px-8 sm:px-12 md:px-16 font-sans">
+  <div class="container mx-auto text-center">
+
+    <!-- Métricas Superiores -->
+    <div class="mb-16 flex flex-col md:flex-row justify-center items-center gap-12 md:gap-20">
+      <div class="anim-item">
+        <p class="text-5xl font-script text-brand-teal">+10.000</p>
+        <p class="text-4xl font-script text-gray-700">users</p>
+      </div>
+      <div class="anim-item">
+        <p class="text-5xl font-script text-brand-teal">+$100K</p>
+        <p class="text-4xl font-script text-gray-700">raised</p>
+      </div>
+    </div>
+
+    <!-- Tarjetas de Testimonios -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
+
+      <!-- Testimonio 1 -->
+      <div class="anim-item relative text-left">
+        <div class="absolute inset-0 z-0" aria-hidden="true">
+          <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 280 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10,20 C30,0 250,0 270,20 S280,320 270,320 C250,340 30,340 10,320 S0,20 10,20 Z" stroke="#4FD1C5" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="relative z-10 p-8 pt-12">
+          <div class="flex items-center gap-4 mb-4">
+            <Image src={userPhoto1} alt="Brian Hill" width={64} height={64} class="rounded-full border-4 border-white shadow-md shrink-0"/>
+            <div>
+              <h3 class="font-script text-2xl text-gray-800">Brian Hill</h3>
+              <p class="text-gray-500 text-sm">Experto en Fimosis</p>
+            </div>
+          </div>
+          <p class="text-gray-600 mb-3 text-sm">"I was blown away by their experience in their individual spaces. I gained so much insight during the first few weeks."</p>
+          <p class="text-gray-600 text-sm">"A ton of tools at the disposal of founders that can save them a ton of cost and time headaches!"</p>
+        </div>
+      </div>
+
+      <!-- Testimonio 2 -->
+      <div class="anim-item relative text-left">
+        <div class="absolute inset-0 z-0" aria-hidden="true">
+          <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 280 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10,20 C30,0 250,0 270,20 S280,320 270,320 C250,340 30,340 10,320 S0,20 10,20 Z" stroke="#4FD1C5" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="relative z-10 p-8 pt-12">
+          <div class="flex items-center gap-4 mb-4">
+            <Image src={userPhoto2} alt="Nelson R.C." width={64} height={64} class="rounded-full border-4 border-white shadow-md shrink-0"/>
+            <div>
+              <h3 class="font-script text-2xl text-gray-800">Nelson R.C.</h3>
+              <p class="text-gray-500 text-sm">Experto en ciberseguridad</p>
+            </div>
+          </div>
+          <p class="text-gray-600 mb-3 text-sm">"I was blown away by their experience in their individual spaces. I gained so much insight. During the first few weeks."</p>
+          <p class="text-gray-600 text-sm">"A ton of tools at the disposal of founders that can save them a ton"</p>
+        </div>
+      </div>
+      
+      <!-- Testimonio 3 -->
+      <div class="anim-item relative text-left">
+        <div class="absolute inset-0 z-0" aria-hidden="true">
+          <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 280 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10,20 C30,0 250,0 270,20 S280,320 270,320 C250,340 30,340 10,320 S0,20 10,20 Z" stroke="#4FD1C5" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="relative z-10 p-8 pt-12">
+          <div class="flex items-center gap-4 mb-4">
+            <Image src={userPhoto3} alt="Brian Hill" width={64} height={64} class="rounded-full border-4 border-white shadow-md shrink-0"/>
+            <div>
+              <h3 class="font-script text-2xl text-gray-800">Brian Hill</h3>
+              <p class="text-gray-500 text-sm">Experto en Cáncer</p>
+            </div>
+          </div>
+          <p class="text-gray-600 mb-3 text-sm">"A ton of tools at the disposal of founders that can save them a ton of cost and time headaches!"</p>
+          <p class="text-gray-600 text-sm">"I was blown away by their experience in their individual spaces. I gained so much insight during the first few weeks."</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Métrica Inferior -->
+    <div class="mt-20">
+      <p class="anim-item text-4xl md:text-5xl font-script text-brand-teal">
+        Recommend by +20 clinics
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .anim-item {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition-delay: var(--delay, 0ms);
+  }
+  .anim-item.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+</style>
+
+<script>
+  const itemsToAnimate = document.querySelectorAll('.anim-item');
+  if (itemsToAnimate.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    itemsToAnimate.forEach((item, index) => {
+      const el = item as HTMLElement;
+      el.style.setProperty('--delay', `${index * 150}ms`);
+      observer.observe(el);
+    });
+  }
+</script> 

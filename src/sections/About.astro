@@ -1,0 +1,81 @@
+---
+import BuildingIcon from '../components/BuildingIcon.astro';
+---
+
+<section id="about" class="min-h-screen flex flex-col justify-center py-20 px-8 sm:px-12 md:px-16 font-sans">
+  <div class="container mx-auto">
+    <!-- Parte Superior: Contenido Introductorio -->
+    <div class="max-w-4xl mx-auto text-center mb-20">
+      <h2 class="font-script text-5xl md:text-6xl text-brand-teal mb-6">What is oPills?</h2>
+      <h3 class="text-2xl md:text-3xl text-gray-800 font-medium mb-4">
+        oPills is the first full accessibility AI driven medication dashboard guided by expert analysts
+      </h3>
+      <p class="text-gray-600 leading-relaxed">
+        oPills is the first full accessibility AI driven medication dashboard guided by expert analysts. oPills is the first full accessibility AI driven medication dashboard guided by expert analysts. oPills is the first full accessibility AI driven medication dashboard guided by expert analysts
+      </p>
+    </div>
+
+    <!-- Parte Inferior: Tres Bloques de Características -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <!-- Bloque 1 -->
+      <div class="feature-block text-center">
+        <BuildingIcon class="w-16 h-16 text-brand-teal mx-auto mb-4" />
+        <h4 class="font-script text-3xl text-brand-teal mb-2">Real time follow-up</h4>
+        <p class="text-gray-600">
+          Pacients follow-up led by a easy-use interface. oPills is the first full accessibility AI driven medication dashboard guided by expert analysts
+        </p>
+      </div>
+      <!-- Bloque 2 -->
+      <div class="feature-block text-center">
+        <BuildingIcon class="w-16 h-16 text-brand-teal mx-auto mb-4" />
+        <h4 class="font-script text-3xl text-brand-teal mb-2">Real time follow-up</h4>
+        <p class="text-gray-600">
+          Pacients follow-up led by a easy-use interface. oPills is the first full accessibility AI driven medication dashboard guided by expert
+        </p>
+      </div>
+      <!-- Bloque 3 -->
+      <div class="feature-block text-center">
+        <BuildingIcon class="w-16 h-16 text-brand-teal mx-auto mb-4" />
+        <h4 class="font-script text-3xl text-brand-teal mb-2">Real time follow-up</h4>
+        <p class="text-gray-600">
+          Pacients follow-up led by a easy-use interface. oPills is the first full accessibility AI driven medication dashboard guided by expert analysts guided by expert
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .feature-block {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition-delay: var(--delay, 0ms);
+  }
+  .feature-block.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  const blocks = document.querySelectorAll('.feature-block');
+  if (blocks.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    blocks.forEach((block, index) => {
+      const el = block as HTMLElement;
+      el.style.setProperty('--delay', `${index * 200}ms`);
+      observer.observe(el);
+    });
+  }
+</script>
