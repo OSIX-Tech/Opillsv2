@@ -1,7 +1,7 @@
 ---
 import PhoneIcon from '../components/PhoneIcon.astro';
 import ArrowRightIcon from '../components/ArrowRightIcon.astro';
-import { Image } from 'astro:assets';
+
 ---
 <section id="hero-section" class="font-sans text-center py-16 px-4 overflow-x-hidden">
   <div class="w-full max-w-7xl mx-auto">
@@ -40,14 +40,17 @@ import { Image } from 'astro:assets';
           class="w-full max-w-4xl order-1 lg:order-2 rounded-xl border-4 border-gray-300 overflow-hidden 
                  h-[150px] lg:h-[200px] transition-all duration-1000 ease-in-out transform scale-90 mx-auto"
         >
-          <Image 
-            id="mockup-image"
-            src="/foto.jpg" 
-            alt="Dashboard de oPills" 
-            width={1200} 
-            height={675} 
-            class="w-full h-full object-cover object-top transition-all duration-1000 ease-in-out transform scale-110" 
-          />
+          <video
+            id="mockup-video"
+            src="/Opillsv2/wow.mp4"
+            poster="/Opillsv2/foto.jpg"
+            muted
+            loop
+            autoplay
+            playsinline
+            preload="auto"
+            class="w-full h-full object-cover object-top transition-all duration-1000 ease-in-out transform scale-110"
+          ></video>
         </div>
 
         <div class="logo-placeholder w-40 shrink-0 order-3 lg:order-3 transition-opacity duration-300">
@@ -62,10 +65,10 @@ import { Image } from 'astro:assets';
 
 <script>
   const mockupContainer = document.getElementById('mockup-container');
-  const mockupImage = document.getElementById('mockup-image');
+  const mockupVideo = document.getElementById('mockup-video') as HTMLVideoElement;
   const logoPlaceholders = document.querySelectorAll('.logo-placeholder');
 
-  if (mockupContainer && mockupImage && logoPlaceholders.length > 0) {
+  if (mockupContainer && mockupVideo && logoPlaceholders.length > 0) {
     const handleScroll = () => {
       // Define the scroll range where the image is expanded.
       // e.g., between 50px and 500px from the top.
@@ -76,8 +79,11 @@ import { Image } from 'astro:assets';
         mockupContainer.classList.remove('h-[150px]', 'lg:h-[200px]', 'scale-90');
         mockupContainer.classList.add('h-[215px]', 'sm:h-[350px]', 'md:h-[504px]', 'scale-105', 'lg:scale-125');
         
-        mockupImage.classList.remove('scale-110');
-        mockupImage.classList.add('scale-100');
+        mockupVideo.classList.remove('scale-110');
+        mockupVideo.classList.add('scale-100');
+        if (mockupVideo.paused) {
+          mockupVideo.play();
+        }
 
         // Hide logos
         logoPlaceholders.forEach(logo => logo.classList.add('opacity-0', 'invisible'));
@@ -86,8 +92,11 @@ import { Image } from 'astro:assets';
         mockupContainer.classList.remove('h-[215px]', 'sm:h-[350px]', 'md:h-[504px]', 'scale-105', 'lg:scale-125');
         mockupContainer.classList.add('h-[150px]', 'lg:h-[200px]', 'scale-90');
 
-        mockupImage.classList.remove('scale-100');
-        mockupImage.classList.add('scale-110');
+        mockupVideo.classList.remove('scale-100');
+        mockupVideo.classList.add('scale-110');
+        if (!mockupVideo.paused) {
+          mockupVideo.pause();
+        }
         
         // Show logos
         logoPlaceholders.forEach(logo => logo.classList.remove('opacity-0', 'invisible'));
@@ -95,6 +104,8 @@ import { Image } from 'astro:assets';
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    // Run on load to set initial state
+    handleScroll();
   }
 </script>
 
