@@ -37,19 +37,18 @@ import ArrowRightIcon from '../components/ArrowRightIcon.astro';
         
         <div 
           id="mockup-container" 
-          class="w-full max-w-4xl order-1 lg:order-2 rounded-xl border-4 border-gray-300 overflow-hidden 
-                 h-[150px] lg:h-[200px] transition-all duration-1000 ease-in-out transform scale-90 mx-auto"
+          class="w-full max-w-4xl order-1 lg:order-2 rounded-xl border-4 border-gray-300 overflow-hidden mx-auto"
         >
           <video
             id="mockup-video"
             src="/Opillsv2/wow.mp4"
-            poster="/Opillsv2/foto.jpg"
+            poster="/foto.jpg"
             muted
             loop
             autoplay
             playsinline
             preload="auto"
-            class="w-full h-full object-cover object-top transition-all duration-1000 ease-in-out transform scale-110"
+            class="w-full h-full object-cover object-top"
           ></video>
         </div>
 
@@ -64,48 +63,82 @@ import ArrowRightIcon from '../components/ArrowRightIcon.astro';
 </section>
 
 <script>
-  const mockupContainer = document.getElementById('mockup-container');
-  const mockupVideo = document.getElementById('mockup-video') as HTMLVideoElement;
-  const logoPlaceholders = document.querySelectorAll('.logo-placeholder');
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-  if (mockupContainer && mockupVideo && logoPlaceholders.length > 0) {
-    const handleScroll = () => {
-      // Define the scroll range where the image is expanded.
-      // e.g., between 50px and 500px from the top.
-      const isExpanded = window.scrollY > 50 && window.scrollY < 500;
+  gsap.registerPlugin(ScrollTrigger);
 
-      if (isExpanded) {
-        // REVEALED STATE: Animate to full size
-        mockupContainer.classList.remove('h-[150px]', 'lg:h-[200px]', 'scale-90');
-        mockupContainer.classList.add('h-[215px]', 'sm:h-[350px]', 'md:h-[504px]', 'scale-105', 'lg:scale-125');
-        
-        mockupVideo.classList.remove('scale-110');
-        mockupVideo.classList.add('scale-100');
-        if (mockupVideo.paused) {
-          mockupVideo.play();
+  const heroSection = document.getElementById('hero-section');
+  if (heroSection) {
+    const title = heroSection.querySelector('h1');
+    const buttons = heroSection.querySelectorAll('button');
+    const mockupContainer = document.getElementById('mockup-container');
+    const mockupVideo = document.getElementById('mockup-video') as HTMLVideoElement;
+    const logoPlaceholders = document.querySelectorAll('.logo-placeholder');
+
+    // --- 1. Animación de entrada inicial ---
+    const entryTl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1 } });
+    entryTl.from(title, { opacity: 0, y: 30, delay: 0.2 })
+           .from(buttons, { opacity: 0, y: 20, stagger: 0.15 }, "-=0.7");
+
+    // --- 2. Animación de scroll (scrub) ---
+    if (mockupContainer && mockupVideo && logoPlaceholders.length > 0) {
+      
+      ScrollTrigger.matchMedia({
+        // Escritorio
+        "(min-width: 768px)": function() {
+          const scrubTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: heroSection,
+              start: "top top",
+              end: "bottom center",
+              scrub: 1.2,
+            },
+            defaults: { ease: "power1.inOut" }
+          });
+          
+          scrubTl.fromTo(mockupContainer, 
+            { height: '40vh', scale: 0.9, maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)' },
+            { height: '504px', scale: 1.2, maskImage: 'linear-gradient(to bottom, black 100%, transparent 100%)' }
+          )
+          .fromTo(mockupVideo, { scale: 1.3 }, { scale: 1 }, "<")
+          .to([title, buttons], { opacity: 0, y: -50 }, "<")
+          .to(logoPlaceholders, { opacity: 0 }, "<");
+        },
+        // Móvil
+        "(max-width: 767px)": function() {
+          const scrubTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: heroSection,
+              start: "top top",
+              end: "bottom center",
+              scrub: 1.2,
+            },
+            defaults: { ease: "power1.inOut" }
+          });
+          
+          scrubTl.fromTo(mockupContainer, 
+            { height: '30vh', scale: 0.9, maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)' },
+            { height: '350px', scale: 1.1, maskImage: 'linear-gradient(to bottom, black 100%, transparent 100%)' } // Más pequeño
+          )
+          .fromTo(mockupVideo, { scale: 1.3 }, { scale: 1 }, "<")
+          .to([title, buttons], { opacity: 0, y: -20 }, "<") // Menos desplazamiento
+          .to(logoPlaceholders, { opacity: 0 }, "<");
         }
+      });
 
-        // Hide logos
-        logoPlaceholders.forEach(logo => logo.classList.add('opacity-0', 'invisible'));
-      } else {
-        // INITIAL STATE: Animate back to cut-off view
-        mockupContainer.classList.remove('h-[215px]', 'sm:h-[350px]', 'md:h-[504px]', 'scale-105', 'lg:scale-125');
-        mockupContainer.classList.add('h-[150px]', 'lg:h-[200px]', 'scale-90');
 
-        mockupVideo.classList.remove('scale-100');
-        mockupVideo.classList.add('scale-110');
-        if (!mockupVideo.paused) {
-          mockupVideo.pause();
-        }
-        
-        // Show logos
-        logoPlaceholders.forEach(logo => logo.classList.remove('opacity-0', 'invisible'));
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    // Run on load to set initial state
-    handleScroll();
+      // --- 3. Control de reproducción del video ---
+      ScrollTrigger.create({
+        trigger: mockupVideo,
+        start: 'top bottom',
+        end: 'bottom top',
+        onEnter: () => mockupVideo.play().catch(() => {}),
+        onLeave: () => mockupVideo.pause(),
+        onEnterBack: () => mockupVideo.play().catch(() => {}),
+        onLeaveBack: () => mockupVideo.pause(),
+      });
+    }
   }
 </script>
 
