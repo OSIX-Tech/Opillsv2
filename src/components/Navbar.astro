@@ -7,26 +7,25 @@ import HamburgerIcon from './HamburgerIcon.astro';
 <header class="p-4 relative">
   <nav class="container mx-auto flex items-center justify-between bg-teal-500 text-white py-2 px-6 rounded-full font-sans">
     <!-- Logo and Brand Name -->
-    <a href="#" class="flex items-center gap-2 z-20">
+    <a href="#hero-section" class="flex items-center gap-2 z-20">
       <LogoIcon class="w-8 h-8 text-white" />
       <span class="text-2xl font-bold">oPills</span>
     </a>
 
     <!-- Desktop Navigation Links -->
     <div class="hidden md:flex items-center gap-x-8 font-script text-2xl">
-      <a href="#" class="hover:underline">
+      <a href="#hero-section" class="hover:underline">
         Home
       </a>
-      <a href="#" class="hover:underline">Dashboard</a>
-      <a href="#" class="hover:underline">Features</a>
-      <a href="#" class="hover:underline">About</a>
-      <a href="#" class="hover:underline">Reviews</a>
+      <a href="#features" class="hover:underline">Features</a>
+      <a href="#about" class="hover:underline">About</a>
+      <a href="#testimonials" class="hover:underline">Reviews</a>
     </div>
 
     <!-- Desktop Phone Icon -->
-    <div class="hidden md:block bg-white text-teal-500 rounded-full p-2">
+    <a href="#contact" class="hidden md:block bg-white text-teal-500 rounded-full p-2">
       <PhoneIcon class="w-6 h-6" />
-    </div>
+    </a>
 
     <!-- Mobile Menu Button -->
     <button id="menu-btn" class="z-20 md:hidden">
@@ -37,12 +36,12 @@ import HamburgerIcon from './HamburgerIcon.astro';
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="hidden absolute top-0 left-0 w-full h-screen bg-teal-500 z-10">
     <div class="container mx-auto flex flex-col items-center justify-center h-full gap-y-8 font-script text-4xl text-white">
-      <a href="#" class="hover:underline">Home</a>
-      <a href="#" class="hover:underline">Dashboard</a>
-      <a href="#" class="hover:underline">Features</a>
-      <a href="#" class="hover:underline">About</a>
-      <a href="#" class="hover:underline">Reviews</a>
-      <a href="#" class="flex items-center gap-4 mt-8 border-2 border-white rounded-full py-2 px-6">
+      <a href="#hero-section" class="hover:underline">Home</a>
+      <a href="#hero-section" class="hover:underline">Dashboard</a>
+      <a href="#features" class="hover:underline">Features</a>
+      <a href="#about" class="hover:underline">About</a>
+      <a href="#testimonials" class="hover:underline">Reviews</a>
+      <a href="#contact" class="flex items-center gap-4 mt-8 border-2 border-white rounded-full py-2 px-6">
         <span>Contact</span>
         <PhoneIcon class="w-8 h-8" />
       </a>
