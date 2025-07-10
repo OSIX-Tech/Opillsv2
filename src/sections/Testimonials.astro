@@ -105,53 +105,28 @@ import userPhoto3 from '../../public/foto3.png';
 
   const testimonialsSection = document.getElementById('testimonials');
   if (testimonialsSection) {
-    const metrics = testimonialsSection.querySelectorAll('.flex-col.md\\:flex-row .anim-item');
-    const testimonialCards = testimonialsSection.querySelectorAll('.grid .anim-item');
-    const bottomMetric = testimonialsSection.querySelector('.mt-20 .anim-item');
+    const animatedItems = gsap.utils.toArray('.anim-item');
 
-    ScrollTrigger.matchMedia({
-      // Escritorio
-      "(min-width: 768px)": function() {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: testimonialsSection,
-            start: "top top",
-            end: "bottom top",
-            toggleActions: "play reverse play reverse"
-          },
-          defaults: { ease: "power3.out", duration: 0.8 }
-        });
-        tl.from(metrics, { opacity: 0, y: 40, stagger: 0.2 });
-        tl.from(testimonialCards, { opacity: 0, y: 50, scale: 0.9, stagger: 0.25 }, "-=0.5");
-        testimonialCards.forEach(card => {
-          const innerElements = card.querySelectorAll('.relative.z-10 > *');
-          tl.from(innerElements, { opacity: 0, y: 20, stagger: 0.1, duration: 0.5 }, "<0.4");
-        });
-        if (bottomMetric) {
-          tl.from(bottomMetric, { opacity: 0, y: 40 }, "-=0.5");
-        }
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: testimonialsSection,
+        start: "top 25%", // Inicia la animación más tarde
+        end: "bottom top",
+        toggleActions: "play reverse play reverse"
       },
-      // Móvil
-      "(max-width: 767px)": function() {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: testimonialsSection,
-            start: "top top",
-            end: "bottom top",
-            toggleActions: "play reverse play reverse"
-          },
-          defaults: { ease: "power2.out", duration: 0.6 }
-        });
-        
-        // Animación más simple para todos los elementos a la vez en móvil
-        const allItems = gsap.utils.toArray('.anim-item');
-        tl.from(allItems, {
-          opacity: 0,
-          y: 25,
-          scale: 0.95,
-          stagger: 0.1
-        });
+      defaults: { 
+        ease: "power3.out", 
+        duration: 0.8 
       }
     });
+
+    if (animatedItems.length > 0) {
+      tl.from(animatedItems, {
+        opacity: 0,
+        y: 30,      // Desplazamiento sutil
+        scale: 0.95,  // Escala ligera
+        stagger: 0.15 // Animación escalonada para un efecto más dinámico
+      });
+    }
   }
 </script> 

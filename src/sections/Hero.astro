@@ -37,7 +37,7 @@ import FullscreenIcon from '../components/FullscreenIcon.astro';
         
         <div 
           id="mockup-container" 
-          class="w-full max-w-4xl order-1 lg:order-2 rounded-xl border-4 border-gray-300 overflow-hidden relative group"
+          class="w-full max-w-6xl order-1 lg:order-2 rounded-xl border-4 border-gray-300 overflow-hidden relative group"
         >
           <video
             id="mockup-video"
@@ -94,8 +94,29 @@ import FullscreenIcon from '../components/FullscreenIcon.astro';
       // --- 2. Animación de scroll (scrub) ---
       if (flexContainer) {
         ScrollTrigger.matchMedia({
-          // Escritorio
-          "(min-width: 768px)": function() {
+          // PANTALLAS SUPER ANCHAS (ULTRA WIDE)
+          "(min-width: 1280px)": function() {
+            const scrubTl = gsap.timeline({
+              scrollTrigger: {
+                trigger: heroSection,
+                start: "top top",
+                end: "bottom center",
+                scrub: 1.2,
+              },
+              defaults: { ease: "power2.inOut" }
+            });
+            
+            scrubTl.fromTo(mockupContainer, 
+              { height: '50vh', scale: 0.85, 'border-radius': '12px', maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)' },
+              { height: '90vh', scale: 1, 'border-radius': '0px', maskImage: 'linear-gradient(to bottom, black 100%, transparent 100%)', duration: 1.2 }
+            )
+            .fromTo(mockupVideo, { scale: 1.4 }, { scale: 1 }, "<")
+            .to([title, buttons], { opacity: 0, y: -60, duration: 0.8 }, "<")
+            .to(logoPlaceholders, { opacity: 0, width: 0, duration: 0.8 }, "<")
+            .to(flexContainer, { gap: 0, duration: 0.8 }, "<");
+          },
+          // ESCRITORIO (DESKTOP)
+          "(min-width: 768px) and (max-width: 1279px)": function() {
             const scrubTl = gsap.timeline({
               scrollTrigger: {
                 trigger: heroSection,
@@ -107,15 +128,15 @@ import FullscreenIcon from '../components/FullscreenIcon.astro';
             });
             
             scrubTl.fromTo(mockupContainer, 
-              { height: '40vh', scale: 0.9, maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)' },
-              { height: '504px', scale: 1.2, maskImage: 'linear-gradient(to bottom, black 100%, transparent 100%)' }
+              { height: '45vh', scale: 0.9, maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)' },
+              { height: '75vh', scale: 1.1, maskImage: 'linear-gradient(to bottom, black 100%, transparent 100%)' }
             )
             .fromTo(mockupVideo, { scale: 1.3 }, { scale: 1 }, "<")
             .to([title, buttons], { opacity: 0, y: -50 }, "<")
             .to(logoPlaceholders, { opacity: 0, width: 0 }, "<")
             .to(flexContainer, { gap: 0 }, "<");
           },
-          // Móvil
+          // MÓVIL (MOBILE)
           "(max-width: 767px)": function() {
             const scrubTl = gsap.timeline({
               scrollTrigger: {
@@ -129,10 +150,10 @@ import FullscreenIcon from '../components/FullscreenIcon.astro';
             
             scrubTl.fromTo(mockupContainer, 
               { height: '30vh', scale: 0.9, maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)' },
-              { height: '350px', scale: 1.1, maskImage: 'linear-gradient(to bottom, black 100%, transparent 100%)' } // Más pequeño
+              { height: '45vh', scale: 1.05, maskImage: 'linear-gradient(to bottom, black 100%, transparent 100%)' }
             )
             .fromTo(mockupVideo, { scale: 1.3 }, { scale: 1 }, "<")
-            .to([title, buttons], { opacity: 0, y: -20 }, "<") // Menos desplazamiento
+            .to([title, buttons], { opacity: 0, y: -20 }, "<")
             .to(logoPlaceholders, { opacity: 0 }, "<");
           }
         });

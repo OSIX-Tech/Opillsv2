@@ -56,49 +56,31 @@ import BuildingIcon from '../components/BuildingIcon.astro';
       const mainContent = aboutSection.querySelector('.max-w-4xl');
       const featureBlocks = gsap.utils.toArray('.feature-block');
 
-      ScrollTrigger.matchMedia({
-        // Escritorio
-        "(min-width: 768px)": function() {
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: aboutSection,
-              start: "top top",
-              end: "bottom top",
-              toggleActions: "play reverse play reverse"
-            },
-            defaults: { ease: "power2.out" }
-          });
-          
-          if (mainContent) {
-            tl.from(mainContent.children, { opacity: 0, y: 40, stagger: 0.2, duration: 0.8 });
-          }
-          if (featureBlocks.length > 0) {
-            tl.from(featureBlocks, { opacity: 0, y: 50, duration: 0.6, stagger: 0.2, scale: 0.9 }, ">-0.3");
-            const allChildren = (featureBlocks as HTMLElement[]).flatMap(block => Array.from(block.children));
-            tl.from(allChildren, { opacity: 0, y: 20, duration: 0.4, stagger: 0.08 }, "<0.5");
-          }
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: aboutSection,
+          start: "top 25%", // Inicia la animación más tarde
+          end: "bottom top",
+          toggleActions: "play reverse play reverse"
         },
-        // Móvil
-        "(max-width: 767px)": function() {
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: aboutSection,
-              start: "top top",
-              end: "bottom top",
-              toggleActions: "play reverse play reverse"
-            },
-            defaults: { ease: "power2.out" }
-          });
-
-          if (mainContent) {
-            tl.from(mainContent.children, { opacity: 0, y: 20, stagger: 0.2, duration: 0.6 }); // Menos desplazamiento y duración
-          }
-          if (featureBlocks.length > 0) {
-            tl.from(featureBlocks, { opacity: 0, y: 25, duration: 0.5, stagger: 0.15, scale: 0.95 }, ">-0.3"); // Más sutil
-            const allChildren = (featureBlocks as HTMLElement[]).flatMap(block => Array.from(block.children));
-            tl.from(allChildren, { opacity: 0, y: 10, duration: 0.3, stagger: 0.05 }, "<0.5");
-          }
-        }
+        defaults: { ease: "power3.out", duration: 0.8 }
       });
+
+      if (mainContent) {
+        tl.from(mainContent.children, { 
+          opacity: 0, 
+          y: 30, // Un desplazamiento vertical sutil
+          stagger: 0.15 
+        });
+      }
+
+      if (featureBlocks.length > 0) {
+        tl.from(featureBlocks, { 
+          opacity: 0, 
+          y: 30, 
+          scale: 0.95, // Una escala muy ligera
+          stagger: 0.15 
+        }, "-=0.5"); // Se superpone con la animación anterior para fluidez
+      }
   }
 </script>
