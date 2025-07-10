@@ -1,21 +1,37 @@
 ---
+import { Image } from 'astro:assets';
 import BuildingIcon from '../components/BuildingIcon.astro';
+// TODO: Replace this with the correct illustration asset once available
+import illustration from '../../public/foto3.png'; 
 ---
 
-<section id="about" class="min-h-screen flex flex-col justify-center py-20 px-8 sm:px-12 md:px-16 font-sans">
+<section id="about" class="py-20 px-8 sm:px-12 md:px-16 font-sans overflow-hidden">
   <div class="container mx-auto">
-    <!-- Parte Superior: Contenido Introductorio -->
-    <div class="max-w-4xl mx-auto text-center mb-20">
-      <h2 class="font-script text-5xl md:text-6xl text-brand-teal mb-6">What is oPills?</h2>
-      <h3 class="text-2xl md:text-3xl text-gray-800 font-medium mb-4">
-        oPills is the first full accessibility AI driven medication dashboard guided by expert analysts
-      </h3>
-      <p class="text-gray-600 leading-relaxed">
-        oPills is the first full accessibility AI driven medication dashboard guided by expert analysts. oPills is the first full accessibility AI driven medication dashboard guided by expert analysts. oPills is the first full accessibility AI driven medication dashboard guided by expert analysts
-      </p>
+    
+    <!-- Top Section: Two-column layout -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
+      <!-- Columna de Texto (Izquierda) -->
+      <div class="text-content text-left">
+        <h2 class="font-script text-5xl md:text-6xl text-brand-teal mb-6">What is oPills?</h2>
+        <h3 class="text-2xl md:text-3xl text-gray-800 font-medium mb-4">
+          oPills is the first full accessibility AI driven medication dashboard guided by expert analysts
+        </h3>
+        <p class="text-gray-600 leading-relaxed">
+          oPills is the first full accessibility AI driven medication dashboard guided by expert analysts. oPills is the first full accessibility AI driven medication dashboard guided by expert analysts. oPills is the first full accessibility AI driven medication dashboard guided by expert analysts
+        </p>
+      </div>
+
+      <!-- Columna de Ilustración (Derecha) -->
+      <div class="image-content flex justify-center items-center">
+        <Image 
+          src={illustration} 
+          alt="Illustration showing the concept of oPills"
+          class="max-w-[300px] w-full h-auto"
+        />
+      </div>
     </div>
 
-    <!-- Parte Inferior: Tres Bloques de Características -->
+    <!-- Bottom Section: Three feature blocks -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
       <!-- Bloque 1 -->
       <div class="feature-block text-center">
@@ -53,34 +69,43 @@ import BuildingIcon from '../components/BuildingIcon.astro';
 
   const aboutSection = document.getElementById('about');
   if (aboutSection) {
-      const mainContent = aboutSection.querySelector('.max-w-4xl');
-      const featureBlocks = gsap.utils.toArray('.feature-block');
+    // Animate the top text content
+    gsap.from(".text-content > *", {
+      scrollTrigger: { trigger: ".text-content", start: "top 80%", toggleActions: "play none none none" },
+      opacity: 0,
+      x: -30,
+      stagger: 0.2,
+      duration: 0.8,
+      ease: 'power3.out'
+    });
 
-      const tl = gsap.timeline({
+    // Animate the top illustration
+    gsap.from(".image-content", {
+      scrollTrigger: { trigger: ".image-content", start: "top 80%", toggleActions: "play none none none" },
+      opacity: 0,
+      scale: 0.8,
+      duration: 1,
+      ease: 'expo.out'
+    });
+
+    // Animate the bottom feature blocks
+    const featureBlocks = gsap.utils.toArray('.feature-block');
+    
+    // Set initial state for the animation
+    gsap.set(featureBlocks, { opacity: 0, y: 40 });
+
+    featureBlocks.forEach(block => {
+      gsap.to(block as HTMLElement, {
         scrollTrigger: {
-          trigger: aboutSection,
-          start: "top 25%", // Inicia la animación más tarde
-          end: "bottom top",
-          toggleActions: "play reverse play reverse"
+          trigger: block as HTMLElement,
+          start: "top 85%",
+          once: true // Ensures the animation runs only once
         },
-        defaults: { ease: "power3.out", duration: 0.8 }
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
       });
-
-      if (mainContent) {
-        tl.from(mainContent.children, { 
-          opacity: 0, 
-          y: 30, // Un desplazamiento vertical sutil
-          stagger: 0.15 
-        });
-      }
-
-      if (featureBlocks.length > 0) {
-        tl.from(featureBlocks, { 
-          opacity: 0, 
-          y: 30, 
-          scale: 0.95, // Una escala muy ligera
-          stagger: 0.15 
-        }, "-=0.5"); // Se superpone con la animación anterior para fluidez
-      }
+    });
   }
 </script>

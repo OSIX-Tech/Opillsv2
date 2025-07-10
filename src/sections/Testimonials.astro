@@ -105,7 +105,8 @@ import userPhoto3 from '../../public/foto3.png';
 
   const testimonialsSection = document.getElementById('testimonials');
   if (testimonialsSection) {
-    const animatedItems = gsap.utils.toArray('.anim-item');
+    // Scope the selector to the section to avoid affecting other elements on the page
+    const animatedItems = gsap.utils.toArray('.anim-item', testimonialsSection);
 
     const tl = gsap.timeline({
       scrollTrigger: {

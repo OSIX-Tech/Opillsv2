@@ -4,23 +4,33 @@ import BrainIcon from '../components/BrainIcon.astro';
 import BuildingIcon from '../components/BuildingIcon.astro';
 ---
 
-<section id="features" class="py-20 px-6 sm:px-8 md:px-12 font-sans overflow-x-hidden">
-  <div class="w-full max-w-7xl mx-auto">
+<section id="features" class="py-20 font-sans overflow-x-hidden">
+  <div class="w-full max-w-7xl mx-auto px-4">
     <!-- Grid responsivo: la altura se calculará automáticamente -->
     <div id="bento-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
       
       <!-- Columna Izquierda (1 caja alta) -->
-      <div class="bento-box md:row-span-3 bg-teal-100 p-6 rounded-3xl shadow-lg min-h-[200px]"></div>
+      <div class="bento-box md:row-span-3 rounded-3xl shadow-lg overflow-hidden">
+        <div class="bento-content h-full bg-teal-100 p-6 min-h-[200px]"></div>
+      </div>
 
       <!-- Fila Superior, Col 2-3 (1 caja ancha) -->
-      <div class="bento-box md:col-span-2 bg-teal-100 p-6 rounded-3xl shadow-lg min-h-[200px]"></div>
+      <div class="bento-box md:col-span-2 rounded-3xl shadow-lg overflow-hidden">
+        <div class="bento-content h-full bg-teal-100 p-6 min-h-[200px]"></div>
+      </div>
       
       <!-- Columna Central, Fila 2-3 (1 caja vertical) -->
-      <div class="bento-box md:row-span-2 bg-teal-100 p-6 rounded-3xl shadow-lg min-h-[200px]"></div>
+      <div class="bento-box md:row-span-2 rounded-3xl shadow-lg overflow-hidden">
+        <div class="bento-content h-full bg-teal-100 p-6 min-h-[200px]"></div>
+      </div>
       
       <!-- Celdas restantes en la columna derecha -->
-      <div class="bento-box bg-teal-100 p-6 rounded-3xl shadow-lg min-h-[200px]"></div>
-      <div class="bento-box bg-teal-100 p-6 rounded-3xl shadow-lg min-h-[200px]"></div>
+      <div class="bento-box rounded-3xl shadow-lg overflow-hidden">
+        <div class="bento-content h-full bg-teal-100 p-6 min-h-[200px]"></div>
+      </div>
+      <div class="bento-box rounded-3xl shadow-lg overflow-hidden">
+        <div class="bento-content h-full bg-teal-100 p-6 min-h-[200px]"></div>
+      </div>
 
     </div>
   </div>
@@ -32,23 +42,25 @@ import BuildingIcon from '../components/BuildingIcon.astro';
 
   gsap.registerPlugin(ScrollTrigger);
 
-  const bentoBoxes = gsap.utils.toArray('.bento-box') as HTMLElement[];
+  const bentoGrid = document.getElementById('bento-grid');
+  if (bentoGrid) {
+    const bentoContents = gsap.utils.toArray('.bento-content') as HTMLElement[];
 
-  bentoBoxes.forEach((box) => {
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: box,
-        start: "top 50%", // Inicia la animación cuando el elemento está casi completamente visible
-        end: "bottom top",
-        toggleActions: "play none none none", // Evita que la animación se revierta
+        trigger: bentoGrid,
+        start: 'top 75%',
+        toggleActions: 'play none none none',
       },
-      defaults: { duration: 0.6, ease: 'power2.out' }
     });
 
-    tl.from(box, {
+    // A more elegant fade-and-slide-up animation
+    tl.from(bentoContents, {
+      duration: 1.2,
+      y: 50,
       opacity: 0,
-      y: 40,
-      scale: 0.9
+      ease: 'expo.out',
+      stagger: 0.2,
     });
-  });
+  }
 </script>

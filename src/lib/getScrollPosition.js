@@ -37,11 +37,6 @@ export function getCorrectScrollY(selector) {
   const viewportHeight = window.innerHeight;
   const maxScroll = documentHeight - viewportHeight;
   
-  // Special case for the "Reviews" section to scroll to the absolute bottom.
-  if (selector === '#testimonials') {
-    return maxScroll;
-  }
-
   const heightDelta = getHeroHeightDelta();
   const rect = targetElement.getBoundingClientRect();
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
