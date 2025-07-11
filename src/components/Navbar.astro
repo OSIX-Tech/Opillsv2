@@ -2,11 +2,11 @@
 import LogoIcon from './LogoIcon.astro';
 import PhoneIcon from './PhoneIcon.astro';
 import HamburgerIcon from './HamburgerIcon.astro';
-import { gsap } from "gsap";
+import CloseIcon from './CloseIcon.astro';
 ---
 
 <header id="main-header" class="p-4 fixed top-0 left-0 w-full z-50">
-  <nav class="container mx-auto flex items-center justify-between bg-teal-500/80 backdrop-blur-lg text-white py-2 px-6 rounded-full font-sans shadow-lg">
+  <nav class="container mx-auto flex items-center justify-between bg-brand-teal text-white py-3 px-4 md:py-2 md:px-6 rounded-full font-sans shadow-lg">
     <!-- Logo and Brand Name -->
     <a href="#page-top" class="flex items-center gap-2 z-20">
       <LogoIcon class="w-8 h-8 text-white" />
@@ -15,9 +15,7 @@ import { gsap } from "gsap";
 
     <!-- Desktop Navigation Links -->
     <div class="hidden md:flex items-center gap-x-8 font-script text-2xl">
-      <a href="#page-top" class="hover:underline">
-        Home
-      </a>
+      <a href="#page-top" class="hover:underline">Home</a>
       <a href="#features" class="hover:underline">Features</a>
       <a href="#about" class="hover:underline">About</a>
       <a href="#testimonials" class="hover:underline">Reviews</a>
@@ -35,34 +33,50 @@ import { gsap } from "gsap";
   </nav>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden absolute top-0 left-0 w-full h-screen bg-teal-500 z-10">
-    <div class="container mx-auto flex flex-col items-center justify-center h-full gap-y-8 font-script text-4xl text-white">
-      <a href="#page-top" class="hover:underline mobile-link">Home</a>
-      <a href="#features" class="hover:underline mobile-link">Features</a>
-      <a href="#about" class="hover:underline mobile-link">About</a>
-      <a href="#testimonials" class="hover:underline mobile-link">Reviews</a>
-      <a href="#contact" class="flex items-center gap-4 mt-8 border-2 border-white rounded-full py-2 px-6 mobile-link">
-        <span>Contact</span>
-        <PhoneIcon class="w-8 h-8" />
-      </a>
-    </div>
+  <div id="mobile-menu" class="fixed inset-0 bg-brand-teal z-30 flex flex-col items-center justify-center">
+    <button id="close-menu-btn" class="absolute top-8 right-8 z-20">
+      <CloseIcon class="w-10 h-10 text-white" />
+    </button>
+    <a href="#page-top" class="mobile-link font-script text-4xl text-white mb-6">Home</a>
+    <a href="#features" class="mobile-link font-script text-4xl text-white mb-6">Features</a>
+    <a href="#about" class="mobile-link font-script text-4xl text-white mb-6">About</a>
+    <a href="#testimonials" class="mobile-link font-script text-4xl text-white mb-6">Reviews</a>
+    <a href="#contact" class="mobile-link flex items-center gap-4 mt-8 border-2 border-white rounded-full py-2 px-6">
+      <span class="font-script text-4xl text-white">Contact</span>
+      <PhoneIcon class="w-8 h-8 text-white" />
+    </a>
   </div>
 </header>
 
 <script>
-  // --- Mobile Menu Logic ---
+  import { gsap } from "gsap";
+
   const menuBtn = document.getElementById('menu-btn');
+  const closeMenuBtn = document.getElementById('close-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
-  const mobileLinks = document.querySelectorAll('.mobile-link');
+  const mobileLinks = gsap.utils.toArray('.mobile-link');
 
-  const toggleMenu = () => {
-    mobileMenu?.classList.toggle('hidden');
-    // Optional: prevent body scroll when menu is open
-    document.body.style.overflow = mobileMenu?.classList.contains('hidden') ? 'auto' : 'hidden';
-  };
+  gsap.set(mobileMenu, { yPercent: -100 });
+  gsap.set(mobileLinks, { opacity: 0 });
 
-  menuBtn?.addEventListener('click', toggleMenu);
-  mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+  const menuTl = gsap.timeline({ paused: true });
+
+  menuTl.to(mobileMenu, {
+    yPercent: 0,
+    duration: 0.5,
+    ease: 'power2.inOut'
+  }).to(mobileLinks, {
+    opacity: 1,
+    stagger: 0.1,
+    duration: 0.4,
+    ease: 'power2.out'
+  }, "-=0.3");
+
+  menuBtn?.addEventListener('click', () => menuTl.play());
+  closeMenuBtn?.addEventListener('click', () => menuTl.reverse());
+  mobileLinks.forEach(link => {
+    (link as HTMLElement).addEventListener('click', () => menuTl.reverse());
+  });
 
   // --- Entry Animation ---
   gsap.from("#main-header nav", {
@@ -70,6 +84,6 @@ import { gsap } from "gsap";
     opacity: 0,
     duration: 1,
     ease: "power3.out",
-    delay: 0.5 // Delay to start after hero text
+    delay: 0.5
   });
 </script> 

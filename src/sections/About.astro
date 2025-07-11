@@ -2,11 +2,11 @@
 import { Image } from 'astro:assets';
 import BuildingIcon from '../components/BuildingIcon.astro';
 // TODO: Replace this with the correct illustration asset once available
-import illustration from '../../public/foto3.png'; 
+import illustration from '../../public/dashboard.png'; 
 ---
 
-<section id="about" class="py-20 px-8 sm:px-12 md:px-16 font-sans overflow-hidden">
-  <div class="container mx-auto">
+<section id="about" class="py-20 font-sans overflow-hidden">
+  <div class="container mx-auto px-8 sm:px-12 md:px-16">
     
     <!-- Top Section: Two-column layout -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
@@ -26,7 +26,7 @@ import illustration from '../../public/foto3.png';
         <Image 
           src={illustration} 
           alt="Illustration showing the concept of oPills"
-          class="max-w-[300px] w-full h-auto"
+          class="max-w-[600px] w-full h-auto"
         />
       </div>
     </div>
@@ -71,7 +71,7 @@ import illustration from '../../public/foto3.png';
   if (aboutSection) {
     // Animate the top text content
     gsap.from(".text-content > *", {
-      scrollTrigger: { trigger: ".text-content", start: "top 80%", toggleActions: "play none none none" },
+      scrollTrigger: { trigger: ".text-content", start: "top 80%", toggleActions: "play reverse play reverse" },
       opacity: 0,
       x: -30,
       stagger: 0.2,
@@ -81,7 +81,7 @@ import illustration from '../../public/foto3.png';
 
     // Animate the top illustration
     gsap.from(".image-content", {
-      scrollTrigger: { trigger: ".image-content", start: "top 80%", toggleActions: "play none none none" },
+      scrollTrigger: { trigger: ".image-content", start: "top 80%", toggleActions: "play reverse play reverse" },
       opacity: 0,
       scale: 0.8,
       duration: 1,
@@ -99,7 +99,7 @@ import illustration from '../../public/foto3.png';
         scrollTrigger: {
           trigger: block as HTMLElement,
           start: "top 85%",
-          once: true // Ensures the animation runs only once
+          toggleActions: "play reverse play reverse"
         },
         opacity: 1,
         y: 0,

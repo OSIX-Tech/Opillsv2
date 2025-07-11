@@ -6,9 +6,9 @@ import PauseIcon from '../components/PauseIcon.astro';
 import FullscreenIcon from '../components/FullscreenIcon.astro';
 ---
 <section id="hero-section" class="font-sans text-center pt-32 pb-16 overflow-x-hidden">
-  <div class="w-full max-w-7xl mx-auto px-4">
+  <div class="container mx-auto px-8 sm:px-12 md:px-16">
     <div>
-      <h1 class="text-5xl md:text-7xl font-bold leading-tight">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
         The most advanced<br />
         intelligent<br />
         <span class="text-brand-teal font-script">Dashboard</span>
@@ -20,7 +20,7 @@ import FullscreenIcon from '../components/FullscreenIcon.astro';
             <PhoneIcon class="w-5 h-5" />
           </div>
         </a>
-        <a href="#about" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-gray-700 font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transition-shadow border border-gray-200">
+        <a href="#mockup-container" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-gray-700 font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transition-shadow border border-gray-200">
           Learn more
           <div class="bg-brand-teal text-white rounded-full p-1">
             <ArrowRightIcon class="w-5 h-5" />
@@ -29,23 +29,35 @@ import FullscreenIcon from '../components/FullscreenIcon.astro';
       </div>
     </div>
 
+    <!-- Logos for Mobile -->
+    <div class="mt-12 flex items-center justify-center gap-12 lg:hidden">
+      <div class="logo-placeholder w-32 shrink-0">
+        <img src="/Opillsv2/eit.png" alt="EIT Logo" class="w-full h-16 object-contain" />
+      </div>
+      <div class="logo-placeholder w-32 shrink-0">
+        <img src="/Opillsv2/avte.png" alt="avte Logo" class="w-full h-16 object-contain" />
+      </div>
+    </div>
+
     <div class="mt-12 w-full">
       <div class="flex flex-wrap lg:flex-nowrap items-center justify-center gap-x-8 gap-y-12">
-        <div class="logo-placeholder w-48 shrink-0 order-2 lg:order-1 transition-opacity duration-300">
+        <!-- Desktop Logo Left -->
+        <div class="logo-placeholder w-48 shrink-0 order-2 lg:order-1 hidden lg:block">
           <img src="/Opillsv2/eit.png" alt="EIT Logo" class="w-full h-20 object-contain" />
         </div>
         
+        <!-- Video for Desktop -->
         <div 
           id="mockup-container" 
-          class="w-full max-w-6xl order-1 lg:order-2 rounded-xl border-4 border-gray-300 overflow-hidden relative group"
+          class="w-full order-1 lg:order-2 rounded-xl border-4 border-gray-300 overflow-hidden relative group hidden lg:block"
         >
           <video
             id="mockup-video"
             src="/Opillsv2/wow.mp4"
-            poster="/Opillsv2/foto.jpg"
+            poster="/Opillsv2/dashboard.png"
             playsinline
             preload="auto"
-            class="w-full h-full object-cover object-top"
+            class="w-full h-full object-cover object-center"
           ></video>
           <div id="video-controls" class="absolute bottom-0 left-0 w-full flex items-center gap-4 p-2 md:p-4 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button id="play-pause-btn" class="p-1">
@@ -61,7 +73,13 @@ import FullscreenIcon from '../components/FullscreenIcon.astro';
           </div>
         </div>
 
-        <div class="logo-placeholder w-48 shrink-0 order-3 lg:order-3 transition-opacity duration-300">
+        <!-- Static Image for Mobile/Tablet -->
+        <div class="w-full order-1 lg:order-2 rounded-xl border-4 border-gray-300 overflow-hidden block lg:hidden">
+            <img src="/Opillsv2/dashboard.png" alt="oPills Dashboard Mockup" class="w-full h-full object-cover object-center" />
+        </div>
+
+        <!-- Desktop Logo Right -->
+        <div class="logo-placeholder w-48 shrink-0 order-3 lg:order-3 hidden lg:block">
           <img src="/Opillsv2/avte.png" alt="avte Logo" class="w-full h-20 object-contain" />
         </div>
       </div>
@@ -92,133 +110,71 @@ import FullscreenIcon from '../components/FullscreenIcon.astro';
     if (mockupContainer) {
       const flexContainer = mockupContainer.parentElement;
 
-      // --- 2. Animación de scroll (scrub) ---
+      // --- 2. Animación de scroll (scrub) - ONLY FOR LARGE SCREENS ---
       if (flexContainer) {
         ScrollTrigger.matchMedia({
-          // PANTALLAS SUPER ANCHAS (ULTRA WIDE)
-          "(min-width: 1280px)": function() {
+          "(min-width: 1024px)": function() {
+            // Set the initial state of the animation to prevent a jump on scroll start
+            gsap.set(mockupContainer, { height: '50vh', scale: 0.85, 'border-radius': '12px' });
+
             const scrubTl = gsap.timeline({
               scrollTrigger: {
                 trigger: heroSection,
                 start: "top top",
                 end: "bottom center",
-                scrub: 1.5, // Más lento
+                scrub: 1.5,
               },
               defaults: { ease: "power2.inOut" }
             });
             
-            scrubTl.fromTo(mockupContainer, 
-              { height: '50vh', scale: 0.85, 'border-radius': '12px' },
+            scrubTl.to(mockupContainer, 
               { height: '90vh', scale: 1, 'border-radius': '0px', duration: 1 }
             )
             .to([title, buttons], { opacity: 0, y: -60, duration: 0.8 }, "<")
             .to(logoPlaceholders, { opacity: 0, width: 0, duration: 0.8 }, "<")
             .to(flexContainer, { gap: 0, duration: 0.8 }, "<");
-          },
-          // ESCRITORIO (DESKTOP)
-          "(min-width: 768px) and (max-width: 1279px)": function() {
-            const scrubTl = gsap.timeline({
-              scrollTrigger: {
-                trigger: heroSection,
-                start: "top top",
-                end: "bottom center",
-                scrub: 1.5, // Más lento
-              },
-              defaults: { ease: "power1.inOut" }
-            });
             
-            scrubTl.fromTo(mockupContainer, 
-              { height: '45vh', scale: 0.9 },
-              { height: '75vh', scale: 1.1 }
-            )
-            .to([title, buttons], { opacity: 0, y: -50 }, "<")
-            .to(logoPlaceholders, { opacity: 0, width: 0 }, "<")
-            .to(flexContainer, { gap: 0 }, "<");
-          },
-          // MÓVIL (MOBILE)
-          "(max-width: 767px)": function() {
-            const scrubTl = gsap.timeline({
-              scrollTrigger: {
-                trigger: heroSection,
-                start: "top top",
-                end: "bottom center",
-                scrub: 1.5, // Más lento
-              },
-              defaults: { ease: "power1.inOut" }
-            });
-            
-            scrubTl.fromTo(mockupContainer, 
-              { height: '30vh', scale: 0.9 },
-              { height: '45vh', scale: 1.05 }
-            )
-            .to([title, buttons], { opacity: 0, y: -20 }, "<")
-            .to(logoPlaceholders, { opacity: 0 }, "<");
-          }
-        });
-      }
+            // --- Video Player Logic ---
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            const timelineContainer = document.getElementById('timeline-container');
+            const timelineProgress = document.getElementById('timeline-progress');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
 
-      // --- 3. Video Player Logic ---
-      const playPauseBtn = document.getElementById('play-pause-btn');
-      const playIcon = document.getElementById('play-icon');
-      const pauseIcon = document.getElementById('pause-icon');
-      const timelineContainer = document.getElementById('timeline-container');
-      const timelineProgress = document.getElementById('timeline-progress');
-      const fullscreenBtn = document.getElementById('fullscreen-btn');
+            if (mockupVideo && playPauseBtn && playIcon && pauseIcon && timelineContainer && timelineProgress && fullscreenBtn) {
+              const togglePlay = () => mockupVideo.paused ? mockupVideo.play() : mockupVideo.pause();
+              const updatePlayButton = () => {
+                playIcon.classList.toggle('hidden', !mockupVideo.paused);
+                pauseIcon.classList.toggle('hidden', mockupVideo.paused);
+              };
 
-      if (mockupVideo && playPauseBtn && playIcon && pauseIcon && timelineContainer && timelineProgress && fullscreenBtn) {
+              playPauseBtn.addEventListener('click', togglePlay);
+              mockupVideo.addEventListener('click', togglePlay);
+              mockupVideo.addEventListener('play', updatePlayButton);
+              mockupVideo.addEventListener('pause', updatePlayButton);
 
-        // --- Play/Pause Logic ---
-        const togglePlay = () => {
-          if (mockupVideo.paused) {
-            mockupVideo.play();
-          } else {
-            mockupVideo.pause();
-          }
-        };
+              const updateTimeline = () => {
+                timelineProgress.style.width = `${(mockupVideo.currentTime / mockupVideo.duration) * 100}%`;
+              };
 
-        const updatePlayButton = () => {
-          if (mockupVideo.paused) {
-            playIcon.classList.remove('hidden');
-            pauseIcon.classList.add('hidden');
-          } else {
-            playIcon.classList.add('hidden');
-            pauseIcon.classList.remove('hidden');
-          }
-        };
+              timelineContainer.addEventListener('click', (e: MouseEvent) => {
+                const rect = timelineContainer.getBoundingClientRect();
+                mockupVideo.currentTime = ((e.clientX - rect.left) / rect.width) * mockupVideo.duration;
+              });
+              
+              mockupVideo.addEventListener('timeupdate', updateTimeline);
 
-        playPauseBtn.addEventListener('click', togglePlay);
-        mockupVideo.addEventListener('click', togglePlay);
-        mockupVideo.addEventListener('play', updatePlayButton);
-        mockupVideo.addEventListener('pause', updatePlayButton);
-
-        // --- Timeline Logic ---
-        const updateTimeline = () => {
-          const percentage = (mockupVideo.currentTime / mockupVideo.duration) * 100;
-          timelineProgress.style.width = `${percentage}%`;
-        };
-
-        const seekVideo = (e: MouseEvent) => {
-          const rect = timelineContainer.getBoundingClientRect();
-          const percent = (e.clientX - rect.left) / rect.width;
-          mockupVideo.currentTime = percent * mockupVideo.duration;
-        };
-        
-        timelineContainer.addEventListener('click', seekVideo);
-        mockupVideo.addEventListener('timeupdate', updateTimeline);
-
-        // --- Fullscreen Logic ---
-        const toggleFullscreen = () => {
-          if (!document.fullscreenElement) {
-              // Use the video container for fullscreen request
-              mockupContainer.requestFullscreen();
-          } else {
-            if (document.exitFullscreen) {
-              document.exitFullscreen();
+              fullscreenBtn.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                  mockupContainer.requestFullscreen();
+                } else {
+                  document.exitFullscreen();
+                }
+              });
             }
-          }
-        };
-
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
+          },
+        });
       }
     }
   }
