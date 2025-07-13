@@ -1,8 +1,26 @@
 ---
 import { Image } from 'astro:assets';
-import BuildingIcon from '../components/BuildingIcon.astro';
-// TODO: Replace this with the correct illustration asset once available
-import illustration from '../../public/dashboard.png'; 
+import { Icon } from 'astro-icon/components';
+
+import illustration from '../assets/dashboard.png'; 
+
+const features = [
+  {
+    icon: 'heroicons:cpu-chip-20-solid',
+    title: 'AI-Powered Insights',
+    description: 'Our dashboard is driven by advanced AI, providing intelligent insights into your medication schedule and adherence, guided by expert analysts.'
+  },
+  {
+    icon: 'heroicons:building-office-2-20-solid',
+    title: 'Full Accessibility',
+    description: 'Designed with a user-first approach, oPills offers an easy-to-use interface, ensuring that managing your health is straightforward for everyone.'
+  },
+  {
+    icon: 'heroicons:phone-20-solid',
+    title: 'Real-Time Follow-Up',
+    description: 'Stay connected and informed with real-time follow-ups. Our platform makes it simple for patients and caregivers to track progress.'
+  }
+];
 ---
 
 <section id="about" class="py-20 font-sans overflow-hidden">
@@ -13,11 +31,11 @@ import illustration from '../../public/dashboard.png';
       <!-- Columna de Texto (Izquierda) -->
       <div class="text-content text-left">
         <h2 class="font-script text-5xl md:text-6xl text-brand-teal mb-6">What is oPills?</h2>
-        <h3 class="text-2xl md:text-3xl text-gray-800 font-medium mb-4">
-          oPills is the first full accessibility AI driven medication dashboard guided by expert analysts
+        <h3 class="text-2xl md:text-3xl text-brand-text font-medium mb-4">
+          The first fully accessible, AI-driven medication dashboard guided by expert analysts.
         </h3>
-        <p class="text-gray-600 leading-relaxed">
-          oPills is the first full accessibility AI driven medication dashboard guided by expert analysts. oPills is the first full accessibility AI driven medication dashboard guided by expert analysts. oPills is the first full accessibility AI driven medication dashboard guided by expert analysts
+        <p class="text-brand-text leading-relaxed">
+          oPills revolutionizes medication management by combining cutting-edge AI with human expertise. We provide a seamless, intuitive, and fully accessible platform that simplifies your health journey, ensuring you never miss a step.
         </p>
       </div>
 
@@ -33,30 +51,13 @@ import illustration from '../../public/dashboard.png';
 
     <!-- Bottom Section: Three feature blocks -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-      <!-- Bloque 1 -->
-      <div class="feature-block text-center">
-        <BuildingIcon class="w-16 h-16 text-brand-teal mx-auto mb-4" />
-        <h4 class="font-script text-3xl text-brand-teal mb-2">Real time follow-up</h4>
-        <p class="text-gray-600">
-          Pacients follow-up led by a easy-use interface. oPills is the first full accessibility AI driven medication dashboard guided by expert analysts
-        </p>
-      </div>
-      <!-- Bloque 2 -->
-      <div class="feature-block text-center">
-        <BuildingIcon class="w-16 h-16 text-brand-teal mx-auto mb-4" />
-        <h4 class="font-script text-3xl text-brand-teal mb-2">Real time follow-up</h4>
-        <p class="text-gray-600">
-          Pacients follow-up led by a easy-use interface. oPills is the first full accessibility AI driven medication dashboard guided by expert
-        </p>
-      </div>
-      <!-- Bloque 3 -->
-      <div class="feature-block text-center">
-        <BuildingIcon class="w-16 h-16 text-brand-teal mx-auto mb-4" />
-        <h4 class="font-script text-3xl text-brand-teal mb-2">Real time follow-up</h4>
-        <p class="text-gray-600">
-          Pacients follow-up led by a easy-use interface. oPills is the first full accessibility AI driven medication dashboard guided by expert analysts guided by expert
-        </p>
-      </div>
+      {features.map(feature => (
+        <div class="feature-block text-center">
+          <Icon name={feature.icon} class="w-16 h-16 text-brand-teal mx-auto mb-4" />
+          <h4 class="font-script text-3xl text-brand-teal mb-2">{feature.title}</h4>
+          <p class="text-brand-text">{feature.description}</p>
+        </div>
+      ))}
     </div>
   </div>
 </section>

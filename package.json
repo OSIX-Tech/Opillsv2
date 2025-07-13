@@ -9,10 +9,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/preact": "^4.1.0",
+    "@iconify-json/heroicons": "^1.2.2",
+    "@iconify-json/lucide": "^1.2.57",
+    "@iconify-json/simple-icons": "^1.2.42",
     "astro": "^5.10.2",
-    "gsap": "^3.13.0",
-    "preact": "^10.26.9"
+    "astro-icon": "^1.1.5",
+    "gsap": "^3.13.0"
   },
   "devDependencies": {
     "@astrojs/tailwind": "^6.0.2",

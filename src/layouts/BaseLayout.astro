@@ -1,15 +1,23 @@
 ---
 import '../styles/global.css';
+import logo from '../assets/logo.png';
 
-const title = "oPills";
-const description = "The future of medication management, guided by expert analysts. Your health, simplified.";
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = "oPills",
+	description = "The future of medication management, guided by expert analysts. Your health, simplified."
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/png" href="/Opillsv2/favicon.png" />
+		<link rel="icon" type="image/png" href={logo.src} />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
@@ -23,6 +31,47 @@ const description = "The future of medication management, guided by expert analy
 	</head>
 	<body id="page-top">
 		<slot />
-		<script src="../lib/smooth-scroll.js"></script>
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				const links = document.querySelectorAll('a[href^="#"]');
+				const duration = 1200; // Slower duration in milliseconds (1.2 seconds)
+				const offset = 80; // Offset from the top in pixels
+
+				links.forEach(link => {
+					link.addEventListener('click', function (e) {
+						e.preventDefault();
+
+						const href = this.getAttribute('href');
+						const targetElement = document.querySelector(href === '#' ? 'body' : href);
+
+						if (targetElement) {
+							const targetPosition =
+								targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
+							const startPosition = window.pageYOffset;
+							const distance = targetPosition - startPosition;
+							let startTime = null;
+
+							function animation(currentTime) {
+								if (startTime === null) startTime = currentTime;
+								const timeElapsed = currentTime - startTime;
+								const run = ease(timeElapsed, startPosition, distance, duration);
+								window.scrollTo(0, run);
+								if (timeElapsed < duration) requestAnimationFrame(animation);
+							}
+
+							// Easing function
+							function ease(t, b, c, d) {
+								t /= d / 2;
+								if (t < 1) return (c / 2) * t * t + b;
+								t--;
+								return (-c / 2) * (t * (t - 2) - 1) + b;
+							}
+
+							requestAnimationFrame(animation);
+						}
+					});
+				});
+			});
+		</script>
 	</body>
 </html> 
